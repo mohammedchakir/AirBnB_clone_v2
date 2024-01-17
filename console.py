@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def create_object_with_parameters(self, args):
+    def do_create(self, args):
         """Create an object of any class with given parameters"""
         ignored_attributes = ('id', 'created_at', 'updated_at', '__class__')
         class_name = ''
