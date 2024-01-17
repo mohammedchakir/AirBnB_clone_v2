@@ -137,22 +137,20 @@ class HBNBCommand(cmd.Cmd):
 
             for param in params:
                 param_match = re.fullmatch(param_pattern, param)
+                if param_match is not None:
+                    key_name = param_match.group('name')
+                    str_v = param_match.group('str_value')
+                    float_v = param_match.group('float_value')
+                    int_v = param_match.group('int_value')
+                    if float_v is not None:
+                        object_kwargs[key_name] = float(float_v)
+                    if int_v is not None:
+                        object_kwargs[key_name] = int(int_v)
+                    if str_v is not None:
+                        object_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
 
-            if param_match is not None:
-                key_name = param_match.group('name')
-                str_v = param_match.group('str_value')
-                float_v = param_match.group('float_value')
-                int_v = param_match.group('int_value')
-
-                if float_v is not None:
-                    object_kwargs[key_name] = float(float_v)
-                if int_v is not None:
-                    object_kwargs[key_name] = int(int_v)
-                if str_v is not None:
-                    object_kwargs[key_name] = str_v[1:-1].replace('_', ' ')
         else:
             class_name = args
-
         if not class_name:
             print("** class name missing **")
             return
