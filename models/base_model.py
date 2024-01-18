@@ -34,11 +34,9 @@ class BaseModel:
         for key, value in kwargs.items():
             if key == '__class__':
                 continue
+            if key in ('created_at', 'updated_at') and type(value) is str:
+                value = datetime.strptime(value, time_fmt)
             setattr(self, key, value)
-            if type(self.created_at) is str:
-                self.created_at = datetime.strptime(self.created_at, time_fmt)
-            if type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(self.updated_at, time_fmt)
 
     def __str__(self):
         """String representation of the BaseModel class"""
