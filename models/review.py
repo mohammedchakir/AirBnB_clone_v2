@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """the class Review"""
-
 import models
 from models.base_model import BaseModel, Base
 from os import getenv

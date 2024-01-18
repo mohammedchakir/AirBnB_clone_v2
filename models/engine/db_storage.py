@@ -10,6 +10,14 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.user import User
+nameclass = {
+    'Amenity': Amenity,
+    'City': City,
+    'Place': Place,
+    'State': State,
+    'Review': Review,
+    'User': User
+}
 
 
 class DBStorage:
@@ -36,12 +44,12 @@ class DBStorage:
         
         objects = {}
         if type(cls) == str:
-            cls = name2class.get(cls, None)
+            cls = nameclass.get(cls, None)
         if cls:
             for obj in self.__session.query(cls):
-                objects[obj.__class__.__name__ + '.' + obj.id] = ob
+                objects[obj.__class__.__name__ + '.' + obj.id] = obj
         else:
-            for cls in name2class.values():
+            for cls in nameclass.values():
                 for obj in self.__session.query(cls):
                     objects[obj.__class__.__name__ + '.' + obj.id] = obj
         return objects

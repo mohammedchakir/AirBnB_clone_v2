@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """This module defines the User class"""
-
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
+import hashlib
 
 
 class User(BaseModel, Base):
