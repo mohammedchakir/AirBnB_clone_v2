@@ -1,15 +1,15 @@
 #!/usr/bin/python3
-""" """
+""" test amenities"""
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
 import os
 
 
 class test_Amenity(test_basemodel):
-    """ amenity test class"""
+    """ amenity test of the class"""
 
     def __init__(self, *args, **kwargs):
-        """inti the test class """
+        """inti test class """
         super().__init__(*args, **kwargs)
         self.name = "Amenity"
         self.value = Amenity

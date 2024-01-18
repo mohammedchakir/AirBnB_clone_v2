@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""A unit test module for the console (command interpreter).
+"""
+A unit test module for the console
+command interpreter.
 """
 import json
 import MySQLdb
@@ -17,12 +19,12 @@ from tests import clear_stream
 
 
 class TestHBNBCommand(unittest.TestCase):
-    """Represents the test class for the HBNBCommand class.
+    """Represents test class for the HBNBCommand class.
     """
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') == 'db', 'FileStorage test')
     def test_fs_create(self):
-        """Tests the create command with the file storage.
+        """Tests create command with the file storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
@@ -45,7 +47,7 @@ class TestHBNBCommand(unittest.TestCase):
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_create(self):
-        """Tests the create command with the database storage.
+        """Tests create command with the database storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
@@ -75,7 +77,7 @@ class TestHBNBCommand(unittest.TestCase):
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_show(self):
-        """Tests the show command with the database storage.
+        """Tests show command with the database storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()
@@ -121,7 +123,7 @@ class TestHBNBCommand(unittest.TestCase):
     @unittest.skipIf(
         os.getenv('HBNB_TYPE_STORAGE') != 'db', 'DBStorage test')
     def test_db_count(self):
-        """Tests the count command with the database storage.
+        """Tests count command with the database storage.
         """
         with patch('sys.stdout', new=StringIO()) as cout:
             cons = HBNBCommand()

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" """
+"""test base model"""
 from models.base_model import BaseModel, Base
 from datetime import datetime
 import unittest
@@ -10,27 +10,27 @@ import os
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                  'basemodel test not supported')
 class test_basemodel(unittest.TestCase):
-    """ test class for base_model class"""
+    """test class for base_model class"""
 
     def __init__(self, *args, **kwargs):
-        """ init the test class of basemodel"""
+        """init the test class of basemodel"""
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
         self.value = BaseModel
 
     def setUp(self):
-        """ the set up method of the test class"""
+        """ set up method of the test class"""
         pass
 
     def tearDown(self):
-        """the teardown method of the ctest class"""
+        """teardown method of the ctest class"""
         try:
             os.remove('file.json')
         except Exception:
             pass
 
     def test_init(self):
-        """Tests the initialization of the model class.
+        """Tests initialization of the model class.
         """
         self.assertIsInstance(self.value(), BaseModel)
         if self.value is not BaseModel:
@@ -68,13 +68,13 @@ class test_basemodel(unittest.TestCase):
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
-        """ testing the str method of themodel"""
+        """ testing str method of themodel"""
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
                          i.__dict__))
 
     def test_todict(self):
-        """ testing the to_dict method"""
+        """ testing to_dict method"""
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
