@@ -41,7 +41,7 @@ class DBStorage:
         """Returns a dictionary of all the objects present."""
         if not self.__session:
             self.reload()
-        
+
         objects = {}
         if type(cls) == str:
             cls = nameclass.get(cls, None)
@@ -54,13 +54,13 @@ class DBStorage:
                     objects[obj.__class__.__name__ + '.' + obj.id] = obj
         return objects
 
-
     def new(self, obj):
         """Add the object to the current database session (self.__session)"""
         self.__session.add(obj)
 
     def save(self):
-        """Commit all changes of the current database session (self.__session)"""
+        """Commit all changes of the current database session
+        (self.__session)"""
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -75,4 +75,3 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
-
