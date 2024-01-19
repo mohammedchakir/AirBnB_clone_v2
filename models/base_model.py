@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains class BaseModel
-"""
+"""This module defines a base class for all models in our hbnb clone"""
 
 from datetime import datetime
 import models
@@ -19,7 +17,7 @@ else:
 
 
 class BaseModel:
-    """The BaseModel class from which future classes will be derived"""
+    """A base class for all hbnb models"""
 
     if getenv("HBNB_TYPE_STORAGE") == 'db':
         id = Column(String(60), nullable=False, primary_key=True)
@@ -27,7 +25,7 @@ class BaseModel:
         updated_at = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        """Initialization of the base model"""
+        """Initialization of the base model class"""
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = self.created_at
@@ -39,18 +37,18 @@ class BaseModel:
             setattr(self, key, value)
 
     def __str__(self):
-        """String representation of the BaseModel class"""
+        """Textual representation of the BaseModel class"""
         return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
                                          self.__dict__)
 
     def save(self):
-        """updates the attribute 'updated_at' with the current datetime"""
+        """Updates the 'updated_at' attribute with the current date and time"""
         self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
     def to_dict(self, save_to_disk=False):
-        """returns a dictionary containing all keys/values of the instance"""
+        """Updates the 'updated_at' attribute with the current date and time"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].isoformat()
@@ -70,5 +68,5 @@ class BaseModel:
         return new_dict
 
     def delete(self):
-        """Delete current instance from storage by calling its delete method"""
+        """Remove the current instance from storage by invoking its delete method"""
         models.storage.delete(self)

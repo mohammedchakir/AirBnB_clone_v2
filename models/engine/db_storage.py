@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-"""Database storage engine using SQLAlchemy with a mysql+mysqldb database
-connection.
+"""
+Utilizing SQLAlchemy as the database storage engine with a MySQL
+database connection using the mysql+mysqldb dialect.
 """
 
 import os
@@ -40,7 +41,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary of all the objects present"""
+        """Returns a dictionary containing all the present objects"""
         if not self.__session:
             self.reload()
         objects = {}
@@ -56,29 +57,29 @@ class DBStorage:
         return objects
 
     def reload(self):
-        """reloads objects from the database"""
+        """Reloads objects from the database"""
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(session_factory)
 
     def new(self, obj):
-        """creates a new object"""
+        """creates new object"""
         self.__session.add(obj)
 
     def save(self):
-        """saves the current session"""
+        """Saves the current session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """deletes an object"""
+        """Deletes an object"""
         if not self.__session:
             self.reload()
         if obj:
             self.__session.delete(obj)
 
     def close(self):
-        """Dispose of current session if active"""
+        """Dispose of the current session if it is active"""
         self.__session.remove()
 
     def get(self, cls, id):
@@ -92,7 +93,7 @@ class DBStorage:
             return None
 
     def count(self, cls=None):
-        """Count number of objects in storage"""
+        """Count the number of objects in storage"""
         total = 0
         if type(cls) == str and cls in name2class:
             cls = name2class[cls]

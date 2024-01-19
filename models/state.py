@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" holds class State"""
+""" State Module for HBNB project """
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
@@ -9,7 +9,7 @@ from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
-    """Representation of state """
+    """State class """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'states'
         name = Column(String(128),
@@ -26,7 +26,7 @@ class State(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') != 'db':
         @property
         def cities(self):
-            """fs getter attribute that returns City instances"""
+            """Attribute to retrieve City instances using the fs getter"""
             values_city = models.storage.all("City").values()
             list_city = []
             for city in values_city:

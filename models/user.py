@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" holds class User"""
+"""This module defines a class User"""
 import hashlib
 import models
 from models.base_model import BaseModel, Base
@@ -9,7 +9,7 @@ from sqlalchemy import Column, String
 
 
 class User(BaseModel, Base):
-    """Representation of a user """
+    """This class defines a user by various attributes"""
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'users'
         email = Column(String(128),

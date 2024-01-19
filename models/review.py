@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" holds class Review"""
+""" Review module for the HBNB project """
 import models
 from models.base_model import BaseModel, Base
 from os import getenv
@@ -10,7 +10,7 @@ from sqlalchemy import ForeignKey
 
 
 class Review(BaseModel, Base):
-    """Representation of Review """
+    """ Review classto store review information """
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         __tablename__ = 'reviews'
         text = Column(String(1024),
@@ -27,5 +27,5 @@ class Review(BaseModel, Base):
         user_id = ""
 
     def __init__(self, *args, **kwargs):
-        """initializes Review"""
+        """initializes Review class"""
         super().__init__(*args, **kwargs)

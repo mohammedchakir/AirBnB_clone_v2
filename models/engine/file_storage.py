@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the FileStorage class
-"""
+"""This module defines a class to manage file storage for hbnb clone"""
 
 import json
 from models.amenity import Amenity
@@ -17,13 +15,13 @@ classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
 
 
 class FileStorage:
-    """serializes instances to a JSON file & deserializes back to instances"""
+    """This class manages storage of hbnb models in JSON format"""
 
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """returns the dictionary __objects"""
+        """Returns a dictionary of models currently in storage"""
         if not cls:
             return self.__objects
         elif type(cls) == str:
@@ -34,13 +32,13 @@ class FileStorage:
                     if v.__class__ == cls}
 
     def new(self, obj):
-        """sets in __objects the obj with key <obj class name>.id"""
+        """Adds new object to storage dictionary"""
         if obj is not None:
             key = obj.__class__.__name__ + "." + obj.id
             self.__objects[key] = obj
 
     def save(self):
-        """serializes __objects to the JSON file (path: __file_path)"""
+        """Saves storage dictionary to file"""
         json_objects = {}
         for key in self.__objects:
             json_objects[key] = self.__objects[key].to_dict(save_to_disk=True)
@@ -48,7 +46,7 @@ class FileStorage:
             json.dump(json_objects, f)
 
     def reload(self):
-        """deserializes the JSON file to __objects"""
+        """Loads storage dictionary from file"""
         try:
             with open(self.__file_path, 'r') as f:
                 jo = json.load(f)
@@ -58,13 +56,13 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """delete obj from __objects if it’s inside"""
+        """Remove the object from the __objects container if it is present"""
         if obj is not None:
             del self.__objects[obj.__class__.__name__ + '.' + obj.id]
             self.save()
 
     def close(self):
-        """Deserialize JSON file to objects"""
+        """Deserialize a JSON file into objects"""
         self.reload()
 
     def get(self, cls, id):
@@ -78,7 +76,7 @@ class FileStorage:
             return None
 
     def count(self, cls=None):
-        """Count number of objects in storage"""
+        """Count the number of objects in storage"""
         total = 0
         if type(cls) == str and cls in classes:
             total = len(self.all(cls))
