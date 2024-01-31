@@ -13,11 +13,11 @@ def do_pack():
     Creates a .tgz archive from the contents of the web_static folder
     """
         current_time = strftime("%Y%m%d%H%M%S")
-        archive_name = "versions/web_static_{}.tgz".format(current_time)
     try: 
         local("mkdir -p versions")
-        local("tar -cvzf versions/{} -C web_static".format(archive_name))
+        local("tar -czvf versions/web_static_{}.tgz web_static/"
+              .format(current_time))
 
-        return archive_name
+        return "versions/web_static_{}.tgz".format(current_time)
     except Exception as e:
         return None
