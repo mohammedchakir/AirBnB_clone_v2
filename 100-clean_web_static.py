@@ -2,47 +2,31 @@
 """
 Fabric script that deletes out-of-date archives
 """
-
 from fabric.api import env, run, local
-from datetime import datetime
+import os
 
-env.hosts = ['<IP web-01>', '<IP web-02>']
-env.user = 'ubuntu'
-env.key_filename = ['my_ssh_private_key']
+env.hosts = ['34.207.57.228', '54.160.106.44']
 
 
 def do_clean(number=0):
+    """Remove outdated archives
+
+    Args:
+        number (int): The quantity of archives to retain
+
+    If the number is 0 or 1, only the latest archive is retained.
+    For a number of 2, both the most recent and second-most recent
+    archives are kept, and so forth
     """
-    Deletes out-of-date archives
-    """
-    try:
-        number = int(number)
-        if number < 0:
-            return
+    number = 1 if int(number) == 0 else int(number)
 
-        # Get the list of archives sorted by modification time
-        archives = local("ls -1tr versions", capture=True).split("\n")
+    archives = sorted(os.listdir("versions"))
+    [archives.pop() for i in range(number)]
+    with lcd("versions"):
+        [local("rm ./{}".format(a)) for a in archives]
 
-        # Keep only the most recent 'number' archives
-        archives_to_keep = archives[-number:]
-
-        # Delete unnecessary archives in the versions folder
-        for archive in archives:
-            if archive not in archives_to_keep:
-                local("rm -f versions/{}".format(archive))
-
-        # Delete unnecessary archives in the /data/web_static/releases folder on both servers
-        releases = run("ls -1tr /data/web_static/releases").split("\n")
-        releases_to_keep = releases[-number:]
-
-        for release in releases:
-            if release not in releases_to_keep:
-                run("rm -rf /data/web_static/releases/{}".format(release))
-
-        print("Cleaned up old archives.")
-    except Exception as e:
-        pass
-
-
-if __name__ == "__main__":
-    do_clean()
+    with cd("/data/web_static/releases"):
+        archives = run("ls -tr").split()
+        archives = [a for a in archives if "web_static_" in a]
+        [archives.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in archives]
