@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Fabric script that creates and distributes an archive to your web servers
 """
@@ -13,12 +13,8 @@ env.hosts = ['34.207.57.228', '54.160.106.44']
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
     dt = datetime.utcnow()
-    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
-                                                         dt.month,
-                                                         dt.day,
-                                                         dt.hour,
-                                                         dt.minute,
-                                                         dt.second)
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(
+        dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
     if os.path.isdir("versions") is False:
         if local("mkdir -p versions").failed is True:
             return None
