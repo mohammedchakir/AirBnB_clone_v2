@@ -1,23 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Fabric script that deletes out-of-date archives
 """
 from fabric.api import env, run, local
 import os
 
-env.hosts = ['34.207.57.228', '54.160.106.44']
+env.hosts = ['18.233.62.225', '52.91.116.153']
 
 
 def do_clean(number=0):
-    """Remove outdated archives
-
-    Args:
-        number (int): The quantity of archives to retain
-
-    If the number is 0 or 1, only the latest archive is retained.
-    For a number of 2, both the most recent and second-most recent
-    archives are kept, and so forth
-    """
+    """Remove outdated archives"""
     number = 1 if int(number) == 0 else int(number)
 
     archives = sorted(os.listdir("versions"))
