@@ -23,10 +23,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """ method doc
-        fab -f 2-do_deploy_web_static.py do_deploy:
-        archive_path=versions/web_static_20231004201306.tgz
-        -i ~/.ssh/id_rsa -u ubuntu
+    """ method deploy
     """
     try:
         if not os.path.exists(archive_path):
@@ -48,6 +45,7 @@ def do_deploy(archive_path):
     except Exception:
         return False
 
+
 def deploy():
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
@@ -57,11 +55,13 @@ def deploy():
         return False
     return do_deploy(path)
 
+
 def remove_local(number):
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
     """
     local("ls -dt versions/* | tail -n +{} | sudo xargs rm -fr".format(number))
+
 
 def do_clean(number=0):
     """ method doc
