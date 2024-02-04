@@ -9,7 +9,6 @@ import os
 env.hosts = ['18.233.62.225', '52.91.116.153']
 
 
-@runs_once
 def do_pack():
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
@@ -22,8 +21,6 @@ def do_pack():
         return path
     return None
 
-
-@task
 def do_deploy(archive_path):
     """ method doc
         fab -f 2-do_deploy_web_static.py do_deploy:
@@ -50,8 +47,6 @@ def do_deploy(archive_path):
     except Exception:
         return False
 
-
-@task
 def deploy():
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
@@ -61,16 +56,12 @@ def deploy():
         return False
     return do_deploy(path)
 
-
-@runs_once
 def remove_local(number):
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
     """
     local("ls -dt versions/* | tail -n +{} | sudo xargs rm -fr".format(number))
 
-
-@task
 def do_clean(number=0):
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
