@@ -31,9 +31,10 @@ def do_deploy(archive_path):
         # Upload archive to /tmp/ directory of the web server
         put(archive_path, remote_tmp_path)
 
-        # Uncompress the archive to /data/web_static/releases/<archive filename without extension>
+        # Uncompress the archive to /data/web_static/releases/
         run(f"mkdir -p {remote_release_path}{archive_no_ext}")
-        run(f"tar -xzf {remote_tmp_path}{archive_filename} -C {remote_release_path}{archive_no_ext}")
+        run(f"tar -xzf {remote_tmp_path}{archive_filename} -C \
+                {remote_release_path}{archive_no_ext}")
 
         # Delete the archive from the web server
         run(f"rm {remote_tmp_path}{archive_filename}")
@@ -41,8 +42,9 @@ def do_deploy(archive_path):
         # Delete the symbolic link /data/web_static/current from the web server
         run(f"rm -f {remote_current_path}")
 
-        # Create a new symbolic link /data/web_static/current linked to the new version
-        run(f"ln -s {remote_release_path}{archive_no_ext} {remote_current_path}")
+        # Create a new symbolic link /data/web_static/current linked to version
+        run(f"ln -s {remote_release_path}{archive_no_ext} \
+                {remote_current_path}")
 
         print("Deployment successful.")
         return True
