@@ -63,6 +63,7 @@ def do_deploy(archive_path):
         return False
     return True
 
+
 def deploy():
     """
     Deploys a new version on the web servers
