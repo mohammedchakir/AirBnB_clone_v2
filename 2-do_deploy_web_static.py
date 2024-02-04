@@ -26,8 +26,8 @@ def do_deploy(archive_path):
 
             # uncompress archive and delete .tgz
             run('sudo tar -xzf /tmp/web_static_{}.tgz -C \
-                    /data/web_static/releases/web_static_{}/'
-                    .format(timestamp, timestamp))
+                    /data/web_static/releases/web_static_{}/'.format(
+                        timestamp, timestamp))
 
             # remove archive
             run('sudo rm /tmp/web_static_{}.tgz'.format(timestamp))
@@ -39,8 +39,7 @@ def do_deploy(archive_path):
 
             # remove extraneous web_static dir
             run('sudo rm -rf /data/web_static/releases/\
-                    web_static_{}/web_static'
-                    .format(timestamp))
+                    web_static_{}/web_static'.format(timestamp))
 
             # delete pre-existing sym link
             run('sudo rm -rf /data/web_static/current')
