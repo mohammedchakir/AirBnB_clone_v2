@@ -12,7 +12,7 @@ def do_clean(number=0):
     """Delete out-of-date the archives.
 
     Args:
-        number (int): Number of archives to keep.
+    number (int): Number of archives to keep.
 
     If number is 0 or 1, keeps only most recent archive. If
     number is 2, keeps most and second recent archives
