@@ -13,6 +13,7 @@ env.hosts = ['18.233.62.225', '52.91.116.153']
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def do_pack():
     """Archives the static files."""
     if not os.path.isdir("versions"):
@@ -38,6 +39,7 @@ def do_pack():
         output = None
 
     return output
+
 
 def do_deploy(archive_path):
     """Deploys the static files to the host servers.
@@ -67,6 +69,7 @@ def do_deploy(archive_path):
         logger.error("Deployment failed: %s", e)
         return False
 
+
 def deploy():
     """Archives and deploys the static files to the host servers."""
     archive_path = do_pack()
@@ -74,6 +77,7 @@ def deploy():
         return do_deploy(archive_path)
     else:
         return False
+
 
 if __name__ == "__main__":
     deploy()
