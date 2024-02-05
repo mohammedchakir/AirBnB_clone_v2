@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""a Fabric script that generates a tgz archive from the contents of the web
-_static folder of your AirBB Clone repo, using the function do_pack
+"""
+Fabric script that generates a .tgz archive from the contents
+of the web_static folder
 """
 from fabric.api import *
 from datetime import datetime
