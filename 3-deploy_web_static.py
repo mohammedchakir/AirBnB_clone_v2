@@ -48,7 +48,8 @@ def do_local_deploy(archive_path):
 
     file_name = os.path.basename(archive_path)
     folder_name = file_name.replace(".tgz", "")
-    folder_path = os.path.join(os.getcwd(), "data", "web_static", "releases", folder_name)
+    folder_path = os.path.join(
+        os.getcwd(), "data", "web_static", "releases", folder_name)
 
     try:
         local("mkdir -p {}".format(folder_path))
