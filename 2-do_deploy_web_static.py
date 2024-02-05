@@ -12,12 +12,12 @@ env.key_filename = ['~/.ssh/school']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
+    """Distributes an archive to both of webservers 01 & 02.
 
     Args:
-        archive_path (str): The path of the archive to distribute.
+        archive_path (str): Path of archive to distribute.
     Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
+        If the file doesn't exist at archive_path or an error apears - False.
         Otherwise - True.
     """
     if os.path.isfile(archive_path) is False:
