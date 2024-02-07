@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """
-Fabric script that creates and distributes an archive to your web servers
+Fabric script that creates and distributes an archive to local directory
 """
 
-from fabric.api import local, run, put, env
+from fabric.api import local, env
 import os
 from datetime import datetime
 import logging
 
-env.hosts = ['18.233.62.225', '52.91.116.153']
+env.hosts = ['localhost']
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ def do_pack():
 
     try:
         logger.info("Packing web_static to %s", output)
-        local("tar -cvzf {} web_static".format(output))
+        local("tar -cvzf {} web_static my_index.html".format(output))
         archive_size = os.stat(output).st_size
         logger.info("web_static packed: %s -> %s Bytes", output, archive_size)
     except Exception as e:
@@ -42,7 +42,7 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """Deploys the static files to the host servers.
+    """Deploys the static files to the local directory.
     Args:
         archive_path (str): The path to the archived static files.
     """
@@ -50,19 +50,15 @@ def do_deploy(archive_path):
         logger.error("Archive not found at %s", archive_path)
         return False
 
-    file_name = os.path.basename(archive_path)
-    folder_name = file_name.replace(".tgz", "")
-    folder_path = "/data/web_static/releases/{}/".format(folder_name)
-
     try:
-        put(archive_path, "/tmp/{}".format(file_name))
-        run("mkdir -p {}".format(folder_path))
-        run("tar -xzf /tmp/{} -C {}".format(file_name, folder_path))
-        run("rm -rf /tmp/{}".format(file_name))
-        run("mv {}web_static/* {}".format(folder_path, folder_path))
-        run("rm -rf {}web_static".format(folder_path))
-        run("rm -rf /data/web_static/current")
-        run("ln -s {} /data/web_static/current".format(folder_path))
+        local("mkdir -p /data/web_static/releases/")
+        local("tar -xzf {} -C /data/web_static/releases/".format(archive_path))
+        file_name = os.path.basename(archive_path)
+        folder_name = file_name.replace(".tgz", "")
+        run("mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/".format(folder_name, folder_name))
+        local("rm -rf /data/web_static/releases/{}/web_static".format(folder_name))
+        local("rm -rf /data/web_static/current")
+        local("ln -s /data/web_static/releases/{}/ /data/web_static/current".format(folder_name))
         logger.info('New version is now LIVE!')
         return True
     except Exception as e:
@@ -71,9 +67,13 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """Archives and deploys the static files to the host servers."""
+    """Archives and deploys the static files to the local directory."""
     archive_path = do_pack()
     if archive_path:
         return do_deploy(archive_path)
     else:
         return False
+
+
+if __name__ == "__main__":
+    deploy()
