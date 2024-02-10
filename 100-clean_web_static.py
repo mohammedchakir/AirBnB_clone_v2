@@ -1,85 +1,31 @@
 #!/usr/bin/python3
 """
-Fabric script that creates and distributes an archive to your web servers
+Fabric script that deletes out-of-date archives
 """
-import re
-import os.path
 from fabric.api import *
-from datetime import datetime
-import sys
+import os.path
 
-
-def do_pack():
-    """Create a tar gzipped archive of the directory web_static."""
-    target = local("mkdir -p ./versions")
-    name = str(datetime.now()).replace(" ", '')
-    opt = re.sub(r'[^\w\s]', '', name)
-    tar = local('tar -cvzf versions/web_static_{}.tgz web_static'.format(opt))
-    if os.path.exists("./versions/web_static_{}.tgz".format(opt)):
-        return os.path.normpath("./versions/web_static_{}.tgz".format(opt))
-    else:
-        return None
-
-
-def do_deploy(archive_path):
-    """Distributes an archive to both of webservers 01 & 02.
-
-    Args:
-        archive_path (str): Path of archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error appears - False.
-        Otherwise - True.
-    """
-    if os.path.exists(archive_path) is False:
-        return False
-    try:
-        arc = archive_path.split("/")
-        base = arc[1].strip('.tgz')
-        put(archive_path, '/tmp/')
-        sudo('mkdir -p /data/web_static/releases/{}'.format(base))
-        main = "/data/web_static/releases/{}".format(base)
-        sudo('tar -xzf /tmp/{} -C {}/'.format(arc[1], main))
-        sudo('rm /tmp/{}'.format(arc[1]))
-        sudo('mv {}/web_static/* {}/'.format(main, main))
-        sudo('rm -rf /data/web_static/current')
-        sudo('ln -s {}/ "/data/web_static/current"'.format(main))
-        return True
-    except:
-        return False
-
-
-def deploy():
-    """Create and distribute an archive to a web server."""
-    path = do_pack()
-    if path is None:
-        return False
-    result = do_deploy(path)
-    return result
+env.hosts = ['18.233.62.225', '52.91.116.153']
 
 
 def do_clean(number=0):
+    """Delete out-of-date the archives.
+
+    Args:
+    number (int): Number of archives to keep.
+
+    If number is 0 or 1, keeps only most recent archive. If
+    number is 2, keeps most and second recent archives
     """
-    Deletes out-of-date archives
-    """
-    try:
-        number = int(number)
-        if number < 2:
-            number = 1
-        else:
-            number -= 1
-        local("cd versions && ls -t | tail -n +{} | xargs -I {{}} rm -- {{}}".format(number + 1))
-        run("cd /data/web_static/releases && ls -t | tail -n +{} | xargs -I {{}} sudo rm -rf -- {{}}".format(number + 1))
-    except ValueError:
-        pass
+    number = 1 if int(number) == 0 else int(number)
 
+    archives = sorted(os.listdir("versions"))
+    [archives.pop() for i in range(number)]
+    with lcd("versions"):
+        [local("rm ./{}".format(a)) for a in archives]
 
-if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Usage: {} <SSH_key_path> <username> <number>".format(sys.argv[0]))
-        sys.exit(1)
-
-    env.user = sys.argv[2]
-    env.key_filename = sys.argv[1]
-
-    if len(sys.argv) == 4:
-        do_clean(sys.argv[3])
+    with cd("/data/web_static/releases"):
+        archives = run("ls -tr").split()
+        archives = [a for a in archives if "web_static_" in a]
+        [archives.pop() for i in range(number)]
+        [run("rm -rf ./{}".format(a)) for a in archives]
