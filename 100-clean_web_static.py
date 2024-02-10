@@ -20,6 +20,7 @@ def do_pack():
     else:
         return None
 
+
 def do_deploy(archive_path):
     """Distributes an archive to both of webservers 01 & 02.
 
@@ -46,6 +47,7 @@ def do_deploy(archive_path):
     except:
         return False
 
+
 def deploy():
     """Create and distribute an archive to a web server."""
     path = do_pack()
@@ -53,6 +55,7 @@ def deploy():
         return False
     result = do_deploy(path)
     return result
+
 
 def do_clean(number=0):
     """
