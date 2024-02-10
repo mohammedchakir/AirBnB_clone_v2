@@ -2,11 +2,10 @@
 """
 Fabric script that creates and distributes an archive to your web servers
 """
-
-from fabric.api import *
+import re
 import tarfile
 import os.path
-import re
+from fabric.api import *
 from datetime import datetime
 
 env.user = 'ubuntu'
@@ -15,8 +14,7 @@ env.key_filename = "~/.ssh/school"
 
 
 def do_pack():
-    """distributes an archive to your web servers
-    """
+    """Create a tar gzipped archive of the directory web_static."""
     target = local("mkdir -p ./versions")
     name = str(datetime.now()).replace(" ", '')
     opt = re.sub(r'[^\w\s]', '', name)
@@ -28,7 +26,13 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """distributes an archive to your web servers
+    """Distributes an archive to both of webservers 01 & 02.
+
+    Args:
+        archive_path (str): Path of archive to distribute.
+    Returns:
+        If the file doesn't exist at archive_path or an error apears - False.
+        Otherwise - True.
     """
     if os.path.exists(archive_path) is False:
         return False
@@ -49,9 +53,9 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """distributes an archive to your web servers"""
+    """Create and distribute an archive to a web server."""
     path = do_pack()
     if path is None:
         return False
-    f = do_deploy(path)
-    return f
+    result = do_deploy(path)
+    return result
