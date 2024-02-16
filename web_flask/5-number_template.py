@@ -60,7 +60,7 @@ def display_number_template(n=None):
     Display an HTML page with "Number: n" inside an H1 tag in the BODY.
     """
     if isinstance(n, int):
-        return render_template("5-number.html", number=n)
+        return render_template("5-number.html", n=n)
 
 
 if __name__ == "__main__":
