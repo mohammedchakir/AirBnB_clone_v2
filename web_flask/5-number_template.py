@@ -54,7 +54,7 @@ def display_number(n):
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
-def display_number_template(n):
+def display_number_template(n=None):
     """
     Display an HTML page with "Number: n" inside an H1 tag in the BODY.
     """
