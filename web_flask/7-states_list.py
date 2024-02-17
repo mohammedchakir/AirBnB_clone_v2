@@ -10,17 +10,17 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def teardown_session(self):
-    """Remove the current SQLAlchemy Session after each request"""
-    storage.close()
-
-
-@app.route('/states_list', strict_slashes=False)
-def states_list():
+@app.route("/states_list", strict_slashes=False)
+def display_states():
     """Display a list of all State objects present in DBStorage"""
     states = storage.all()
     return render_template('7-states_list.html', states=states)
+
+
+@app.teardown_appcontext
+def teardown(self):
+    """Remove the current SQLAlchemy Session after each request"""
+    storage.close()
 
 
 if __name__ == "__main__":
