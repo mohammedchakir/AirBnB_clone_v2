@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>States List</title>
-</head>
-<body>
-    <H1>States</H1>
-    <UL>
-		{% for state_id, state in states.items() %}
-		<li>{{ state.id }}: <b>{{ state.name }}<b></li>
-		{% endfor %}
-	</UL>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>HBNB</title>
+	</head>
+	<body>
+		<H1>States</H1>
+		<UL>
+			{% for state_id, state in states.items() %}
+			<li>{{ state_id }}: <b>{{ state.name }}<b></li>
+			{% endfor %}
+		</UL>
+	</body>
 </html>
