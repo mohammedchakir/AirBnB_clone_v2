@@ -1,4 +1,4 @@
-# script the define the Ppuppet for config
+# script the define the Puppet for config
 
 $nginx_conf = "server {
     listen 80 default_server;
@@ -11,7 +11,7 @@ $nginx_conf = "server {
         index index.html index.htm;
     }
     location /redirect_me {
-        return 301 http://linktr.ee/firdaus_h_salim/;
+        return 301 https://github.com/mohammedchakir;
     }
     error_page 404 /404.html;
     location /404 {
