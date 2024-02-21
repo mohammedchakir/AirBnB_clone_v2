@@ -1,26 +1,26 @@
 #!/usr/bin/python3
 """
-This script starts a Flask web application with specified routes.
+Script to start a Flask web application.
 """
-from flask import Flask, render_template
-from models import storage
-from models.state import State
 
+from flask import Flask, render_template
+from models import storage, State
 
 app = Flask(__name__)
 
 
-@app.route("/states_list", strict_slashes=False)
-def display_states():
-    """Display a list of all State objects present in DBStorage"""
-    states = storage.all()
-    return render_template('7-states_list.html', states=states)
-
-
 @app.teardown_appcontext
-def teardown(self):
-    """Remove the current SQLAlchemy Session after each request"""
+def teardown(exception):
+    """Remove the current SQLAlchemy Session."""
     storage.close()
+
+
+@app.route('/states_list', strict_slashes=False)
+def states_list():
+    """Display a HTML page with a list of all State objects sorted by name."""
+    states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template('7-states_list.html', states=sorted_states)
 
 
 if __name__ == "__main__":
