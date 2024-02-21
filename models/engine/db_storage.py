@@ -40,7 +40,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        ''' query on the current database session '''
+        """query on the current database session"""
         objs = {}
         if cls is not None:
             cls = cls if type(cls) != str else models[cls]
@@ -53,11 +53,11 @@ class DBStorage:
         return objs
 
     def new(self, obj):
-        ''' add the object to the current database session '''
+        """add the object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
-        ''' saves or writeto db '''
+        """saves or writeto db"""
         self.__session.commit()
 
     def delete(self, obj=None):
@@ -70,7 +70,7 @@ class DBStorage:
         self.__session.close()
 
     def reload(self):
-        ''' create all tables in the database '''
+        """create all tables in the database"""
         Base.metadata.create_all(self.__engine)
         session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session)
